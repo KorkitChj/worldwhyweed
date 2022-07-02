@@ -1,0 +1,13 @@
+{
+  "connectionString": "mongodb://localhost/WorldWhyWeed",
+  "secret": "116db77a-4c2d-4c7d-958b-f44ec9bcec4f",
+  "emailFrom": "info@node-mongo-signup-verification-api.com",
+  "smtpOptions": {
+    "host": "smtp.ethereal.email",
+    "port": 587,
+    "auth": {
+      "user": "eleonore.witting97@ethereal.email",
+      "pass": "s1BRNY1UwVcbqu7aEy"
+    }
+  }
+}
