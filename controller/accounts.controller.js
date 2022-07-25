@@ -80,13 +80,14 @@ function revokeToken(req, res, next) {
 
 function registerSchema(req, res, next) {
     const schema = Joi.object({
-        title: Joi.string().required(),
-        firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
+        // title: Joi.string().required(),
+        // firstName: Joi.string().required(),
+        // lastName: Joi.string().required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
-        confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
-        acceptTerms: Joi.boolean().valid(true).required()
+        role: Joi.string().required(),
+        // confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
+        // acceptTerms: Joi.boolean().valid(true).required()
     });
     validateRequest(req, next, schema);
 }

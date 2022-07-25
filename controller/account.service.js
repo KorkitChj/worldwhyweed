@@ -5,6 +5,7 @@ const crypto = require("crypto");
 //const sendEmail = require('_helpers/send-email');
 const db = require('_helpers/db');
 const Role = require('_helpers/role');
+const {Account} = require("../_helpers/db");
 
 module.exports = {
     authenticate,
@@ -89,7 +90,8 @@ async function register(params, origin) {
 
     // first registered account is an admin
     const isFirstAccount = (await db.Account.countDocuments({})) === 0;
-    account.role = isFirstAccount ? Role.Admin : Role.User;
+    if(!Role.hasOwnProperty(account.role)) throw 'role is not found';
+    //account.role = isFirstAccount ? Role.Admin : Role.User;
     account.verificationToken = randomTokenString();
 
     // hash password

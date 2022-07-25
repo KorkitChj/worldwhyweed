@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const errorHandler = require('_middleware/error-handler');
+// allow cors requests from any origin and with credentials
+app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 
 
 
@@ -17,12 +19,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// allow cors requests from any origin and with credentials
-app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
+const apiVersion = "/api/v1/";
 
 app.use('/',front);
 app.use('/backend/',system);
-app.use('/accounts', require('./controller/accounts.controller'));
+app.use(`${apiVersion}accounts`, require('./controller/accounts.controller'));
+app.use(`${apiVersion}products`, require('./controller/products.controller'));
 
 
 // global error handler
