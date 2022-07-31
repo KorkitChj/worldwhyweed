@@ -2,7 +2,7 @@ require('rootpath')();
 
 var expess = require('express'),
     app = expess(),
-    port = process.env.PORT || 3020;
+    port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
