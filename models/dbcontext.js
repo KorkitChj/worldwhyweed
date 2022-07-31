@@ -1,6 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://0.0.0.0:27017/WorldWhyWeed";
-var url1 = "mongodb://0.0.0.0:27017/";
+var url = "mongodb+srv://Korkit:<Korkit072540>@cluster0.s6w06tp.mongodb.net/?retryWrites=true&w=majority";
+var url1 = "mongodb+srv://Korkit:<Korkit072540>@cluster0.s6w06tp.mongodb.net/?retryWrites=true&w=majority";
 
 module.exports = {
     FinddataAll:function (sort,collec,callback){
