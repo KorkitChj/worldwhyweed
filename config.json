@@ -1,5 +1,5 @@
 {
-  "connectionString": "mongodb+srv://Korkit:<Korkit072540>@cluster0.s6w06tp.mongodb.net/?retryWrites=true&w=majority",
+  "connectionString": "mongodb+srv://Korkit:Korkit072540@cluster0.s6w06tp.mongodb.net/?retryWrites=true&w=majority",
   "secret": "116db77a-4c2d-4c7d-958b-f44ec9bcec4f",
   "emailFrom": "info@node-mongo-signup-verification-api.com",
   "smtpOptions": {
