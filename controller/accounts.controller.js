@@ -38,7 +38,7 @@ function authenticate(req, res, next) {
     accountService.authenticate({ email, password, ipAddress })
         .then(({ refreshToken, ...account }) => {
             setTokenCookie(res, refreshToken);
-            res.json(account);
+            res.status(200).json({ data: account, status: 'success' });
         })
         .catch(next);
 }
@@ -94,7 +94,7 @@ function registerSchema(req, res, next) {
 
 function register(req, res, next) {
     accountService.register(req.body, req.get('origin'))
-        .then(() => res.json({ message: 'Registration successful' }))
+        .then(() => res.status(200).json({ message: 'Registration successful', status: 'success'  }))
         .catch(next);
 }
 
