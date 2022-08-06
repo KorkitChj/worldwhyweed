@@ -25,6 +25,7 @@ app.use('/',front);
 app.use('/backend/',system);
 app.use(`${apiVersion}accounts`, require('./controller/accounts.controller'));
 app.use(`${apiVersion}products`, require('./controller/products.controller'));
+app.use(`${apiVersion}member`, require('./controller/member.controller'));
 
 
 // global error handler

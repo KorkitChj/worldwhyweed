@@ -26,14 +26,14 @@ function productSchema(req, res, next) {
 
 function addProduct(req, res, next) {
     if (req.user.role !== Role.Seller) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Unauthorized', status: 'error' });
     }
 
     const {productName,productPrice} = req.body;
     const accountId = req.user.id;
     productService.addProduct({accountId,productName,productPrice})
         .then((data) => {
-            res.status(200).json({'message': data});
+            res.json({message: data ,status: 'success'});
         })
         .catch(next);
 }
@@ -41,45 +41,45 @@ function addProduct(req, res, next) {
 function getAll(req,res,next){
     const accountId = req.user.id;
     if (req.user.role !== Role.Seller) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Unauthorized',status: 'error' });
     }
 
     productService.getAll(accountId)
-        .then(products => res.json(products))
+        .then(products => res.json({ message: 'success',status: 'success', data: products }))
         .catch(next);
 }
 
 function getById(req,res,next){
     const accountId = req.user.id;
     if (req.user.role !== Role.Seller) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Unauthorized',status: 'error' });
     }
     const productId = req.params.id;
     productService.getById({productId,accountId})
-        .then(product => product ? res.json(product) : res.sendStatus(404))
+        .then(product => product ? res.json({ message: 'success',status: 'success', data: product }) : res.sendStatus(404))
         .catch(next);
 }
 
 function updateProduct(req,res,next){
     const accountId = req.user.id;
     if (req.user.role !== Role.Seller) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Unauthorized',status: 'error' });
     }
     const productId = req.params.id;
     const params = req.body;
     productService.updateProduct({params,productId,accountId})
-        .then(product => product ? res.json({'message' : product}) : res.sendStatus(404))
+        .then(product => product ? res.json({message : product,status: 'success'}) : res.sendStatus(404))
         .catch(next);
 }
 
 function deleteProduct(req,res,next){
     const accountId = req.user.id;
     if (req.user.role !== Role.Seller) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Unauthorized',status: 'error' });
     }
     const productId = req.params.id;
     productService.deleteProduct({productId,accountId})
-        .then(() => res.json({ message: 'Product deleted successfully' }))
+        .then(() => res.json({ message: 'Product deleted successfully',status: 'success' }))
         .catch(next);
 
 }
