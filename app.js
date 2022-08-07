@@ -1,8 +1,12 @@
 require('rootpath')();
+require('dotenv').config();
 
-var expess = require('express'),
-    app = expess(),
-    port = process.env.PORT || 3000;
+
+const server = require('express'),
+    app = server(),
+    port = process.env.NODE_ENV === 'development'
+        ? process.env.PortDev
+        : process.env.Port;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -12,8 +16,8 @@ app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: 
 
 
 
-var system = require('./router/system');
-var front = require('./router/fontend');
+const system = require('./router/system');
+const front = require('./router/fontend');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -30,10 +34,11 @@ app.use(`${apiVersion}member`, require('./controller/member.controller'));
 
 // global error handler
 app.use(errorHandler);
-app.use(function (req,res){
-    res.status(404).send({url:req.originalUrl + 'not found'})
-});
+app.use((req,res) =>{ res.status(404).send({url:req.originalUrl + ' not found'}) });
 
 app.listen(port);
 
-console.log('todo list RESTful API server started on: ' + port);
+console.log('todo list Rest full API server started on: ' + port);
+
+// 'npm start' for production mode
+// 'npm run dev' for development mode
