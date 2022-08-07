@@ -21,7 +21,8 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    createBookbank
 };
 
 async function authenticate({ email, password, ipAddress }) {
@@ -193,9 +194,9 @@ async function update(id, params) {
     }
 
     // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = hash(params.password);
-    }
+    // if (params.password) {
+    //     params.passwordHash = hash(params.password);
+    // }
 
     // copy params to account and save
     Object.assign(account, params);
@@ -249,10 +250,24 @@ function randomTokenString() {
 }
 
 function basicDetails(account) {
-    const { id, title, firstName, lastName, email, role, created, updated, isVerified } = account;
-    return { id, title, firstName, lastName, email, role, created, updated, isVerified };
+    const { id, title ,userName ,fullName, birthDate, profilePath, gender, tel ,
+        firstName, lastName, email, role, created, updated, isVerified } = account;
+    return { id, title ,userName ,fullName, birthDate, profilePath, gender, tel,
+        firstName, lastName, email, role, created, updated, isVerified };
 }
 
+async function createBookbank(params){
+    // validate
+    if (await db.Bookbank.findOne({ cardName: params.cardName })) {
+        throw 'Card Name "' + params.cardName + '" is already registered';
+    }
+
+    const bookBank = new db.Bookbank(params);
+    // save account
+    await bookBank.save();
+
+    return 'success';
+}
 // async function sendVerificationEmail(account, origin) {
 //     let message;
 //     if (origin) {

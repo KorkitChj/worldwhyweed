@@ -16,10 +16,14 @@ router.post('/forgot-password', forgotPasswordSchema, forgotPassword);
 router.post('/validate-reset-token', validateResetTokenSchema, validateResetToken);
 router.post('/reset-password', resetPasswordSchema, resetPassword);
 router.get('/', authorize(Role.Admin), getAll);
-router.get('/:id', authorize(), getById);
 router.post('/', authorize(Role.Admin), createSchema, create);
-router.put('/:id', authorize(), updateSchema, update);
-router.delete('/:id', authorize(), _delete);
+router.get('/profile/:id', authorize([Role.User,Role.Admin]), getById);
+router.put('/profile/:id', authorize([Role.User,Role.Admin]), updateSchema, update);
+router.delete('/profile/:id', authorize([Role.User,Role.User]), _delete);
+router.post('/bookbank', authorize([Role.User,Role.Admin]),createBookbankSchema, createBookbank);
+// router.get('/bookbank/:id', authorize([Role.User,Role.Admin]), getBookbank);
+// router.put('/bookbank/:id', authorize([Role.User,Role.Admin]), updateBookbankSchema, updateBookbank);
+// router.delete('/bookbank/:id', authorize([Role.User,Role.User]), _deleteBookbank);
 
 module.exports = router;
 
@@ -190,12 +194,13 @@ function create(req, res, next) {
 
 function updateSchema(req, res, next) {
     const schemaRules = {
-        title: Joi.string().empty(''),
-        firstName: Joi.string().empty(''),
-        lastName: Joi.string().empty(''),
+        userName: Joi.string().empty(''),
+        fullName: Joi.string().empty(''),
         email: Joi.string().email().empty(''),
-        password: Joi.string().min(6).empty(''),
-        confirmPassword: Joi.string().valid(Joi.ref('password')).empty('')
+        tel: Joi.number().min(10).empty(''),
+        birthDate: Joi.date().empty(''),
+        profilePath: Joi.string().empty(''),
+        gender: Joi.string().valid('male','female','other').empty(''),
     };
 
     // only admins can update role
@@ -203,7 +208,7 @@ function updateSchema(req, res, next) {
         schemaRules.role = Joi.string().valid(Role.Admin, Role.User).empty('');
     }
 
-    const schema = Joi.object(schemaRules).with('password', 'confirmPassword');
+    const schema = Joi.object(schemaRules);
     validateRequest(req, next, schema);
 }
 
@@ -226,6 +231,25 @@ function _delete(req, res, next) {
 
     accountService.delete(req.params.id)
         .then(() => res.json({ message: 'Account deleted successfully',status: 'success' }))
+        .catch(next);
+}
+
+function createBookbankSchema(req, res, next) {
+    const schema = {
+        cardName: Joi.string().required(),
+        cardNumber: Joi.string().required(),
+        expiredDate: Joi.string().required(),
+        ccv: Joi.string().required(),
+        isActive: Joi.string().valid('yes','no').required(),
+        isDelete: Joi.string().valid('yes','no').required(),
+    };
+
+    validateRequest(req, next, schema);
+}
+
+function createBookbank(req,res,next){
+    accountService.createBookbank(req.body)
+        .then(status => res.json({ message: 'success' ,status: status }))
         .catch(next);
 }
 
